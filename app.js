@@ -3,6 +3,7 @@
   const $ = (id) => document.getElementById(id);
   let state = loadState();
   let activeId = state.assistants[0]?.id || null;
+  let isSending = false;
 
   function loadState() {
     try {
@@ -86,15 +87,6 @@
     messages.append(bubble);
     messages.scrollTop = messages.scrollHeight;
   }
-  function demoReply(assistant, question) {
-    const context = assistant.notes.length
-      ? "\n\nI can refer to these saved notes: " + assistant.notes.slice(0, 3).join(" · ").slice(0, 450)
-      : "";
-    const instruction = assistant.instructions
-      ? "\nYour configured guidance is: " + assistant.instructions.slice(0, 260)
-      : "";
-    return "I'm " + assistant.name + ", your local demo assistant. You asked: “" + question + "”\n\nMy current personality is " + assistant.personality.toLowerCase() + ". This prototype demonstrates your assistant setup, but it is not connected to an AI model yet, so I can't generate a genuine AI answer." + context + instruction + "\n\nThe next development step is to connect a model through a secure backend.";
-  }
   function renderChat(assistant) {
     const messages = $("chat-messages");
     messages.replaceChildren();
@@ -107,12 +99,35 @@
       const heading = document.createElement("h3");
       heading.textContent = "Start a conversation";
       const p = document.createElement("p");
-      p.textContent = "Your assistant's replies are simulated locally in this prototype.";
+      p.textContent = "Send a message to your assistant. AI replies require a configured server API key.";
       welcome.append(orb, heading, p);
       messages.append(welcome);
       return;
     }
     assistant.messages.forEach((message) => addMessage(message.role, message.text));
+  }
+  function setConnectionStatus(configured) {
+    const pill = document.querySelector(".live-pill");
+    if (!pill) return;
+    pill.innerHTML = configured ? "<i></i> AI READY" : "<i></i> SETUP REQUIRED";
+    pill.classList.toggle("configured", configured);
+    pill.classList.toggle("not-configured", !configured);
+  }
+  async function checkHealth() {
+    try {
+      const response = await fetch("/api/health");
+      if (!response.ok) throw new Error("Health check failed");
+      const data = await response.json();
+      setConnectionStatus(Boolean(data.aiConfigured));
+      const disclaimer = document.querySelector(".chat-disclaimer");
+      if (disclaimer) disclaimer.textContent = data.aiConfigured
+        ? "AI connected · Usage may be billed by your API provider"
+        : "AI backend added · Add OPENAI_API_KEY to the server to enable live replies";
+    } catch (_) {
+      setConnectionStatus(false);
+      const disclaimer = document.querySelector(".chat-disclaimer");
+      if (disclaimer) disclaimer.textContent = "Start Mrclone.ai with npm start to use the secure AI backend";
+    }
   }
   function render() {
     renderList();
@@ -162,18 +177,49 @@
     persist();
     renderNotes(assistant);
   });
-  $("chat-form").addEventListener("submit", (event) => {
+  $("chat-form").addEventListener("submit", async (event) => {
     event.preventDefault();
     const assistant = activeAssistant();
     const input = $("chat-input");
     const question = input.value.trim();
-    if (!assistant || !question) return;
+    if (!assistant || !question || isSending) return;
+
     assistant.messages.push({ role: "user", text: question });
-    const reply = demoReply(assistant, question);
-    assistant.messages.push({ role: "assistant", text: reply });
     input.value = "";
     persist();
     renderChat(assistant);
+    isSending = true;
+    $("send-button").disabled = true;
+    $("send-button").textContent = "…";
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          assistant: {
+            name: assistant.name,
+            description: assistant.description,
+            personality: assistant.personality,
+            instructions: assistant.instructions,
+            notes: assistant.notes
+          },
+          messages: assistant.messages.slice(-12)
+        })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || "The AI request failed. Please try again.");
+      assistant.messages.push({ role: "assistant", text: data.answer });
+      persist();
+      renderChat(assistant);
+    } catch (error) {
+      addMessage("assistant", "I couldn't get a response: " + error.message);
+    } finally {
+      isSending = false;
+      $("send-button").disabled = false;
+      $("send-button").textContent = "↑";
+      input.focus();
+    }
   });
   $("export-assistant").addEventListener("click", () => {
     const assistant = activeAssistant();
@@ -188,4 +234,5 @@
   });
 
   render();
+  checkHealth();
 })();
