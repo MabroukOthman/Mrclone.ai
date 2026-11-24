@@ -59,7 +59,7 @@
             </form>
             <div class="knowledge-section">
               <div class="subheading"><div><p class="eyebrow">REFERENCE MATERIAL</p><h3>Knowledge notes</h3></div><span class="count" id="note-count">0</span></div>
-              <p class="muted small">Add notes this assistant can refer to in the local demo.</p>
+              <p class="muted small">Add reference notes your live AI assistant can use.</p>
               <textarea id="knowledge-input" rows="3" placeholder="Paste useful facts, context, or notes..."></textarea>
               <button class="secondary-button" id="add-knowledge">＋ Add knowledge note</button>
               <ul id="knowledge-list" class="knowledge-list"></ul>
@@ -67,15 +67,15 @@
           </section>
 
           <section class="panel chat-panel">
-            <div class="panel-heading chat-heading"><div><p class="eyebrow">PLAYGROUND</p><h2>Test your assistant</h2></div><span class="live-pill"><i></i> DEMO</span></div>
+            <div class="panel-heading chat-heading"><div><p class="eyebrow">PLAYGROUND</p><h2>Test your assistant</h2></div><span class="live-pill"><i></i> CHECKING</span></div>
             <div id="chat-messages" class="chat-messages" aria-live="polite">
               <div class="welcome-message"><div class="mini-orb">✳</div><h3>Start a conversation</h3><p>Your assistant's replies are simulated locally in this prototype.</p></div>
             </div>
             <form id="chat-form" class="chat-composer">
               <textarea id="chat-input" rows="1" placeholder="Message your assistant..." aria-label="Message your assistant" required></textarea>
-              <button class="send-button" type="submit" aria-label="Send message">↑</button>
+              <button class="send-button" id="send-button" type="submit" aria-label="Send message">↑</button>
             </form>
-            <p class="chat-disclaimer">Demo mode · No AI provider is connected · Your data stays in this browser</p>
+            <p class="chat-disclaimer">Checking AI connection…</p>
           </section>
         </div>
       </section>
