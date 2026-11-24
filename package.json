@@ -1,0 +1,21 @@
+{
+  "name": "mrclone-ai",
+  "version": "0.2.0",
+  "private": false,
+  "description": "Open-source platform for creating and customizing personalized AI assistants.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.1.0",
+    "helmet": "^8.1.0",
+    "openai": "^6.0.0"
+  }
+}
