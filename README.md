@@ -1,5 +1,7 @@
 # Mrclone.ai
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/MabroukOthman/Mrclone.ai)
+
 **An open-source platform for creating, customizing, and chatting with personalized AI assistants.**
 
 Mrclone.ai combines an assistant builder with a server-side AI integration. Creators configure an assistant's name, purpose, personality, instructions, and reference notes, then test it in a chat playground.
@@ -18,6 +20,12 @@ Mrclone.ai combines an assistant builder with a server-side AI integration. Crea
 
 - Node.js 20 or newer
 - An OpenAI API key for live AI responses
+
+## Deploy to Render
+
+You can deploy the Node.js app to Render using the button above. Render reads the `render.yaml` Blueprint in this repository. During setup, provide the `OPENAI_API_KEY` value privately in Render; never add it to GitHub. The service uses the free web-service plan in the Blueprint, subject to Render's current free-tier limits.
+
+After deployment, open the service URL and check `/api/health`. The first prototype stores assistant profiles and chat history in the browser's local storage, so data does not sync across devices or users.
 
 ## Run locally
 
