@@ -112,6 +112,8 @@ app.post("/api/chat", chatLimiter, async (req, res) => {
 });
 
 app.use(express.static("public", { maxAge: "1h" }));
+app.get("/styles.css", (_req, res) => res.sendFile("styles.css", { root: process.cwd() }));
+app.get("/app.js", (_req, res) => res.sendFile("app.js", { root: process.cwd() }));
 app.get("/", (_req, res) => res.sendFile("index.html", { root: process.cwd() }));
 
 app.listen(port, () => {
