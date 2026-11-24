@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10131c">
+  <meta name="description" content="Create, customize, and chat with personalized AI assistants using Mrclone.ai.">
+  <title>Mrclone.ai — Build your AI assistant</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="Mrclone.ai home"><span class="brand-mark">m</span><span>Mrclone<span class="brand-dot">.</span>ai</span></a>
+      <button class="primary-button full" id="new-assistant">＋ New assistant</button>
+      <p class="side-label">YOUR WORKSPACE</p>
+      <div id="assistant-list" class="assistant-list" aria-label="Your assistants"></div>
+      <div class="sidebar-bottom">
+        <span class="status-dot"></span>
+        <span>Local prototype</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><p class="eyebrow">YOUR PERSONAL AI WORKSPACE</p><h1 id="page-title">Build your assistant</h1></div>
+        <button class="quiet-button" id="export-assistant" disabled>Export config ↗</button>
+      </header>
+
+      <section id="empty-state" class="empty-state">
+        <div class="hero-orb">✳</div>
+        <p class="eyebrow">MAKE AI YOURS</p>
+        <h2>Your ideas. Your assistant.</h2>
+        <p>Create a personalized assistant, shape how it behaves, add knowledge, and try it in a private demo chat.</p>
+        <button class="primary-button" id="empty-create">Create your first assistant <span>→</span></button>
+      </section>
+
+      <section id="workspace" class="workspace hidden">
+        <div class="workspace-grid">
+          <section class="panel builder-panel">
+            <div class="panel-heading"><div><p class="eyebrow">CONFIGURATION</p><h2>Assistant settings</h2></div><span class="step-pill">01 / BUILD</span></div>
+            <form id="assistant-form">
+              <label for="assistant-name">Name</label>
+              <input id="assistant-name" maxlength="48" placeholder="e.g. My Research Partner" required>
+              <label for="assistant-description">Short description</label>
+              <input id="assistant-description" maxlength="120" placeholder="What does this assistant help with?">
+              <label for="assistant-personality">Personality</label>
+              <select id="assistant-personality">
+                <option value="Helpful and friendly">Helpful and friendly</option>
+                <option value="Clear and professional">Clear and professional</option>
+                <option value="Curious and creative">Curious and creative</option>
+                <option value="Concise and direct">Concise and direct</option>
+                <option value="Patient teacher">Patient teacher</option>
+              </select>
+              <label for="assistant-instructions">Instructions</label>
+              <textarea id="assistant-instructions" rows="5" placeholder="Describe its role, goals, tone, and rules..."></textarea>
+              <div class="field-note">Be specific. You can change these settings at any time.</div>
+              <div class="form-actions"><button class="primary-button" type="submit">Save assistant</button><button class="danger-button" type="button" id="delete-assistant">Delete</button></div>
+            </form>
+            <div class="knowledge-section">
+              <div class="subheading"><div><p class="eyebrow">REFERENCE MATERIAL</p><h3>Knowledge notes</h3></div><span class="count" id="note-count">0</span></div>
+              <p class="muted small">Add notes this assistant can refer to in the local demo.</p>
+              <textarea id="knowledge-input" rows="3" placeholder="Paste useful facts, context, or notes..."></textarea>
+              <button class="secondary-button" id="add-knowledge">＋ Add knowledge note</button>
+              <ul id="knowledge-list" class="knowledge-list"></ul>
+            </div>
+          </section>
+
+          <section class="panel chat-panel">
+            <div class="panel-heading chat-heading"><div><p class="eyebrow">PLAYGROUND</p><h2>Test your assistant</h2></div><span class="live-pill"><i></i> DEMO</span></div>
+            <div id="chat-messages" class="chat-messages" aria-live="polite">
+              <div class="welcome-message"><div class="mini-orb">✳</div><h3>Start a conversation</h3><p>Your assistant's replies are simulated locally in this prototype.</p></div>
+            </div>
+            <form id="chat-form" class="chat-composer">
+              <textarea id="chat-input" rows="1" placeholder="Message your assistant..." aria-label="Message your assistant" required></textarea>
+              <button class="send-button" type="submit" aria-label="Send message">↑</button>
+            </form>
+            <p class="chat-disclaimer">Demo mode · No AI provider is connected · Your data stays in this browser</p>
+          </section>
+        </div>
+      </section>
+      <footer>Mrclone.ai <span>·</span> Open-source assistant builder <span>·</span> Early prototype</footer>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
